@@ -159,4 +159,51 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get historyClearConfirm =>
       'Vuoi eliminare tutte le scansioni recenti?';
+
+  @override
+  String get onboardingTitle => 'Come viene calcolato il punteggio';
+
+  @override
+  String get onboardingLegendTitle => 'Fasce di punteggio';
+
+  @override
+  String get onboardingFactorsTitle => 'Cosa conta nel calcolo';
+
+  @override
+  String get onboardingFactor1Title => 'Net carbs · 50%';
+
+  @override
+  String get onboardingFactor1Body =>
+      'Carboidrati totali meno le fibre. Il parametro principale in keto: più sono bassi, meglio è.';
+
+  @override
+  String get onboardingFactor2Title => 'Rapporto grassi / proteine · 25%';
+
+  @override
+  String get onboardingFactor2Body =>
+      'In keto l\'ideale è ricavare più calorie dai grassi che dalle proteine. Un rapporto superiore a 1.5 è ottimale.';
+
+  @override
+  String get onboardingFactor3Title => 'Penalità zuccheri · 15%';
+
+  @override
+  String get onboardingFactor3Body =>
+      'Zuccheri semplici e alcuni dolcificanti come maltitolo e sorbitolo vengono penalizzati e segnalati con un avviso.';
+
+  @override
+  String get onboardingExampleTitle => 'Perché le uova prendono 71 e non 100?';
+
+  @override
+  String get onboardingExampleBody =>
+      'Le uova hanno pochissimi carboidrati — ottimo. Ma contengono più proteine che grassi (circa 13 g vs 10 g per 100 g): il rapporto grassi/proteine è 0.77, sotto la soglia ottimale di 1.5.\n\nIl punteggio non misura solo «ha pochi carbs?» ma quanto un alimento rispecchia i macro keto ideali. Le uova restano eccellenti in keto: il 71 riflette che non sono burro o olio, non che vadano evitate.';
+
+  @override
+  String get onboardingNoteTitle => 'Rispetto ad altre app di rating';
+
+  @override
+  String get onboardingNoteBody =>
+      'Le app tradizionali tendono a penalizzare alimenti ricchi di grassi. KetoBuddy fa l\'opposto: i grassi buoni sono premiati, i carboidrati penalizzati.';
+
+  @override
+  String get onboardingClose => 'Capito';
 }

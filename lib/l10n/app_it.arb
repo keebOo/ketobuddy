@@ -62,5 +62,19 @@
   "historyYesterday": "Ieri",
   "historyClear": "Cancella storico",
   "historyClearTitle": "Cancella storico",
-  "historyClearConfirm": "Vuoi eliminare tutte le scansioni recenti?"
+  "historyClearConfirm": "Vuoi eliminare tutte le scansioni recenti?",
+  "onboardingTitle": "Come viene calcolato il punteggio",
+  "onboardingLegendTitle": "Fasce di punteggio",
+  "onboardingFactorsTitle": "Cosa conta nel calcolo",
+  "onboardingFactor1Title": "Net carbs · 50%",
+  "onboardingFactor1Body": "Carboidrati totali meno le fibre. Il parametro principale in keto: più sono bassi, meglio è.",
+  "onboardingFactor2Title": "Rapporto grassi / proteine · 25%",
+  "onboardingFactor2Body": "In keto l'ideale è ricavare più calorie dai grassi che dalle proteine. Un rapporto superiore a 1.5 è ottimale.",
+  "onboardingFactor3Title": "Penalità zuccheri · 15%",
+  "onboardingFactor3Body": "Zuccheri semplici e alcuni dolcificanti come maltitolo e sorbitolo vengono penalizzati e segnalati con un avviso.",
+  "onboardingExampleTitle": "Perché le uova prendono 71 e non 100?",
+  "onboardingExampleBody": "Le uova hanno pochissimi carboidrati — ottimo. Ma contengono più proteine che grassi (circa 13 g vs 10 g per 100 g): il rapporto grassi/proteine è 0.77, sotto la soglia ottimale di 1.5.\n\nIl punteggio non misura solo «ha pochi carbs?» ma quanto un alimento rispecchia i macro keto ideali. Le uova restano eccellenti in keto: il 71 riflette che non sono burro o olio, non che vadano evitate.",
+  "onboardingNoteTitle": "Rispetto ad altre app di rating",
+  "onboardingNoteBody": "Le app tradizionali tendono a penalizzare alimenti ricchi di grassi. KetoBuddy fa l'opposto: i grassi buoni sono premiati, i carboidrati penalizzati.",
+  "onboardingClose": "Capito"
 }

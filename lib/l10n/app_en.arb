@@ -62,5 +62,19 @@
   "historyYesterday": "Yesterday",
   "historyClear": "Clear history",
   "historyClearTitle": "Clear history",
-  "historyClearConfirm": "Delete all recent scans?"
+  "historyClearConfirm": "Delete all recent scans?",
+  "onboardingTitle": "How the score is calculated",
+  "onboardingLegendTitle": "Score bands",
+  "onboardingFactorsTitle": "What counts in the calculation",
+  "onboardingFactor1Title": "Net carbs · 50%",
+  "onboardingFactor1Body": "Total carbohydrates minus fiber. The main keto parameter: the lower, the better.",
+  "onboardingFactor2Title": "Fat / protein ratio · 25%",
+  "onboardingFactor2Body": "In keto, the ideal is to get more calories from fat than protein. A ratio above 1.5 is optimal.",
+  "onboardingFactor3Title": "Sugar penalty · 15%",
+  "onboardingFactor3Body": "Simple sugars and some sweeteners like maltitol and sorbitol are penalized and flagged with a warning.",
+  "onboardingExampleTitle": "Why do eggs score 71 and not 100?",
+  "onboardingExampleBody": "Eggs have very few carbohydrates — great. But they contain more protein than fat (about 13 g vs 10 g per 100 g): the fat/protein ratio is 0.77, below the optimal threshold of 1.5.\n\nThe score doesn't just measure «does it have few carbs?» but how well a food reflects ideal keto macros. Eggs remain excellent in keto: the 71 reflects that they're not butter or oil, not that they should be avoided.",
+  "onboardingNoteTitle": "Compared to other rating apps",
+  "onboardingNoteBody": "Traditional apps tend to penalize foods rich in fat. KetoBuddy does the opposite: good fats are rewarded, carbohydrates are penalized.",
+  "onboardingClose": "Got it"
 }

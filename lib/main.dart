@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/storage/history_repository.dart';
+import 'core/storage/prefs_repository.dart';
 import 'features/home/home_page.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HistoryRepository.init();
+  await PrefsRepository.init();
   runApp(const ProviderScope(child: KetoBuddyApp()));
 }
 

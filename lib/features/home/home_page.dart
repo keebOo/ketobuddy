@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
+import '../../core/storage/prefs_repository.dart';
 import '../../l10n/app_localizations.dart';
 import '../history/history_page.dart';
 import '../scan/scan_page.dart';
+import 'widgets/onboarding_dialog.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    if (!PrefsRepository.onboardingSeen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        PrefsRepository.setOnboardingSeen();
+        showOnboardingDialog(context);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +37,18 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
             children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => showOnboardingDialog(context),
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 8, bottom: 8, right: 8),
+                    child: Icon(Icons.info_outline,
+                        size: 20, color: Color(0xFFCCCCCC)),
+                  ),
+                ),
+              ),
               const Spacer(flex: 2),
               Image.asset(
                 'assets/images/appicon.png',

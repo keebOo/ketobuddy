@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/models/keto_score.dart';
 import '../../core/models/product.dart';
 import '../../l10n/app_localizations.dart';
+import '../home/widgets/onboarding_dialog.dart';
 import 'product_detail_provider.dart';
 import 'widgets/macro_bar_widget.dart';
 import 'widgets/score_badge_widget.dart';
@@ -22,6 +23,13 @@ class ProductDetailPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text(product.name ?? l.product),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () => showOnboardingDialog(context),
+            tooltip: 'Info',
+          ),
+        ],
       ),
       body: scoreAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),

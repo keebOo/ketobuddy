@@ -385,6 +385,90 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Vuoi eliminare tutte le scansioni recenti?'**
   String get historyClearConfirm;
+
+  /// No description provided for @onboardingTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Come viene calcolato il punteggio'**
+  String get onboardingTitle;
+
+  /// No description provided for @onboardingLegendTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Fasce di punteggio'**
+  String get onboardingLegendTitle;
+
+  /// No description provided for @onboardingFactorsTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Cosa conta nel calcolo'**
+  String get onboardingFactorsTitle;
+
+  /// No description provided for @onboardingFactor1Title.
+  ///
+  /// In it, this message translates to:
+  /// **'Net carbs · 50%'**
+  String get onboardingFactor1Title;
+
+  /// No description provided for @onboardingFactor1Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Carboidrati totali meno le fibre. Il parametro principale in keto: più sono bassi, meglio è.'**
+  String get onboardingFactor1Body;
+
+  /// No description provided for @onboardingFactor2Title.
+  ///
+  /// In it, this message translates to:
+  /// **'Rapporto grassi / proteine · 25%'**
+  String get onboardingFactor2Title;
+
+  /// No description provided for @onboardingFactor2Body.
+  ///
+  /// In it, this message translates to:
+  /// **'In keto l\'ideale è ricavare più calorie dai grassi che dalle proteine. Un rapporto superiore a 1.5 è ottimale.'**
+  String get onboardingFactor2Body;
+
+  /// No description provided for @onboardingFactor3Title.
+  ///
+  /// In it, this message translates to:
+  /// **'Penalità zuccheri · 15%'**
+  String get onboardingFactor3Title;
+
+  /// No description provided for @onboardingFactor3Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Zuccheri semplici e alcuni dolcificanti come maltitolo e sorbitolo vengono penalizzati e segnalati con un avviso.'**
+  String get onboardingFactor3Body;
+
+  /// No description provided for @onboardingExampleTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Perché le uova prendono 71 e non 100?'**
+  String get onboardingExampleTitle;
+
+  /// No description provided for @onboardingExampleBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Le uova hanno pochissimi carboidrati — ottimo. Ma contengono più proteine che grassi (circa 13 g vs 10 g per 100 g): il rapporto grassi/proteine è 0.77, sotto la soglia ottimale di 1.5.\n\nIl punteggio non misura solo «ha pochi carbs?» ma quanto un alimento rispecchia i macro keto ideali. Le uova restano eccellenti in keto: il 71 riflette che non sono burro o olio, non che vadano evitate.'**
+  String get onboardingExampleBody;
+
+  /// No description provided for @onboardingNoteTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Rispetto ad altre app di rating'**
+  String get onboardingNoteTitle;
+
+  /// No description provided for @onboardingNoteBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Le app tradizionali tendono a penalizzare alimenti ricchi di grassi. KetoBuddy fa l\'opposto: i grassi buoni sono premiati, i carboidrati penalizzati.'**
+  String get onboardingNoteBody;
+
+  /// No description provided for @onboardingClose.
+  ///
+  /// In it, this message translates to:
+  /// **'Capito'**
+  String get onboardingClose;
 }
 
 class _AppLocalizationsDelegate
