@@ -50,5 +50,8 @@
       "message": { "type": "String" }
     }
   },
-  "scanAgain": "Scan another product"
+  "scanAgain": "Scan another product",
+  "homeSubtitle": "Keto Barcode Scanner",
+  "homeScanButton": "Scan",
+  "appVersion": "v0.1"
 }

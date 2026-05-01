@@ -34,3 +34,4 @@ flutter:
   generate: true
   assets:
     - assets/config/keto_score_config.json
+    - assets/images/appicon.png

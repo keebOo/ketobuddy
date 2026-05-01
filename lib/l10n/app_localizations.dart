@@ -313,6 +313,24 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Scansiona altro prodotto'**
   String get scanAgain;
+
+  /// No description provided for @homeSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Keto Barcode Scanner'**
+  String get homeSubtitle;
+
+  /// No description provided for @homeScanButton.
+  ///
+  /// In it, this message translates to:
+  /// **'Scansiona'**
+  String get homeScanButton;
+
+  /// No description provided for @appVersion.
+  ///
+  /// In it, this message translates to:
+  /// **'v0.1'**
+  String get appVersion;
 }
 
 class _AppLocalizationsDelegate

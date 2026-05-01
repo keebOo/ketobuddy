@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'features/scan/scan_page.dart';
+import 'features/home/home_page.dart';
 import 'l10n/app_localizations.dart';
 
 void main() {
@@ -30,7 +30,7 @@ class KetoBuddyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2E7D32)),
         useMaterial3: true,
       ),
-      home: const ScanPage(),
+      home: const HomePage(),
     );
   }
 }

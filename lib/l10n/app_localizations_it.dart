@@ -122,4 +122,13 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get scanAgain => 'Scansiona altro prodotto';
+
+  @override
+  String get homeSubtitle => 'Keto Barcode Scanner';
+
+  @override
+  String get homeScanButton => 'Scansiona';
+
+  @override
+  String get appVersion => 'v0.1';
 }
