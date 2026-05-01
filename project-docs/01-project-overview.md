@@ -16,8 +16,9 @@ I dati nutrizionali provengono dall'API pubblica e gratuita di **Open Food Facts
 
 ## Stato attuale del progetto
 
-- **Milestone 01 completata** ✅ (9/9 checklist item — vedi `MILESTONE_01.md` per il dettaglio).
+- **Milestone 01 completata** ✅ (vedi `MILESTONE_01.md` per il dettaglio).
 - i18n: `app_it.arb` e `app_en.arb` presenti, nessuna stringa hardcoded nei widget.
+- App icon generata per Android, iOS e macOS da `appicon.png` sorgente (768×768).
 - Testato su Android (Pixel 7). iOS non ancora verificato.
 - Prossima milestone: **Milestone 02 — Settings e personalizzazione**.
 
@@ -35,6 +36,7 @@ I dati nutrizionali provengono dall'API pubblica e gratuita di **Open Food Facts
 | Pagamenti (futuro) | **RevenueCat** | Astrae billing iOS e Android |
 | Backend sync (futuro) | **Supabase** | Open source, PostgreSQL, auth inclusa |
 | Lingua UI | **Italiano** (con i18n predisposto) | Target iniziale mercato italiano |
+| Font | **DM Sans** (variable font) | Leggibile, moderno, un solo file TTF copre tutti i pesi |
 
 ---
 
@@ -73,17 +75,35 @@ ketobuddy/
 │   │   ├── services/         # OpenFoodFactsService, ScoringService
 │   │   └── utils/
 │   ├── features/
+│   │   ├── home/             # Schermata iniziale (logo + bottone scan)
 │   │   ├── scan/             # Barcode scanner UI + logic
 │   │   ├── product_detail/   # Scheda prodotto con score
 │   │   ├── settings/         # [FUTURO M02] Limiti giornalieri, preferenze (cartella predisposta)
 │   │   └── diary/            # [FUTURO M03] Diario alimentare giornaliero (da creare)
 │   └── main.dart
 ├── assets/
-│   └── config/
-│       └── keto_score_config.json   # ← ALGORITMO QUI, non nel codice
+│   ├── config/
+│   │   └── keto_score_config.json   # ← ALGORITMO QUI, non nel codice
+│   └── images/
+│       └── appicon.png              # Icona app usata nella home page
 ├── test/
 └── pubspec.yaml
 ```
+
+---
+
+## Tipografia
+
+Font: **DM Sans** — variable font, un solo file `assets/font/DMSans.ttf`, impostato come `fontFamily` globale nel tema.
+
+| Peso | Flutter | Utilizzo |
+|---|---|---|
+| Light 300 | `FontWeight.w300` | Testi piccoli, label grigie, versione app |
+| Regular 400 | `FontWeight.w400` | Corpo testo, sottotitoli, valori numerici |
+| Medium 500 | `FontWeight.w500` | Label, bottoni, titoli secondari |
+| SemiBold 600 | `FontWeight.w600` | Titolo app, nome prodotto, punteggio |
+
+Colori testo ricorrenti: `#1A1A1A` (primario), `#6B7C6B` (sottotitoli/accento verde-grigio), `#CCCCCC` (testi disabilitati/versione).
 
 ---
 

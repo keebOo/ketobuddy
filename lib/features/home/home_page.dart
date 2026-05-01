@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
                 l.appTitle,
                 style: const TextStyle(
                   fontSize: 32,
-                  fontWeight: FontWeight.w300,
+                  fontWeight: FontWeight.w600,
                   letterSpacing: 1.2,
                   color: Color(0xFF1A1A1A),
                 ),
@@ -36,9 +36,10 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 l.homeSubtitle,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
-                  color: Colors.grey.shade500,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF6B7C6B),
                   letterSpacing: 0.5,
                 ),
               ),
@@ -73,9 +74,10 @@ class HomePage extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: Text(
                   l.appVersion,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
-                    color: Colors.grey.shade300,
+                    fontWeight: FontWeight.w300,
+                    color: Color(0xFFCCCCCC),
                   ),
                 ),
               ),

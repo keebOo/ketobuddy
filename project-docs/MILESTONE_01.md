@@ -297,6 +297,8 @@ flutter test --coverage
 
 ## Checklist Milestone 01 completata quando...
 
+- [x] Home page con logo, titolo, sottotitolo e bottone "SCANSIONA"
+- [x] App icon configurata per Android, iOS e macOS (sorgente `appicon.png` 1024x1024)
 - [x] Scansione barcode funzionante su Android e iOS (e Desktop via input manuale)
 - [x] Chiamata API Open Food Facts con gestione errori completa (404, timeout, no-internet, riprova)
 - [x] `keto_score_config.json` caricato a runtime, non hardcoded
