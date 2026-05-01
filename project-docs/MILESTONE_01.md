@@ -38,28 +38,24 @@ Le feature future devono però essere **architetturalmente previste**, non imple
 ```yaml
 # pubspec.yaml — dipendenze principali
 dependencies:
-  flutter:
-    sdk: flutter
-  flutter_riverpod: ^2.x         # State management
-  mobile_scanner: ^5.x           # Barcode scanning (usa ML Kit)
-  dio: ^5.x                      # HTTP client per Open Food Facts API
-  freezed_annotation: ^2.x       # Modelli immutabili
-  json_annotation: ^4.x          # JSON serialization
-  hive_flutter: ^1.x             # Storage locale (storico scansioni)
-  in_app_review: ^2.x            # Prompt valutazione store
-  flutter_localizations:         # i18n predisposto
-    sdk: flutter
-  intl: ^0.x
+  flutter_riverpod: ^3.3.1       # State management
+  mobile_scanner: ^7.2.0         # Barcode scanning (usa ML Kit)
+  dio: ^5.8.0                    # HTTP client per Open Food Facts API
+  freezed_annotation: ^3.1.0     # Modelli immutabili
+  json_annotation: ^4.11.0       # JSON serialization
+  hive_flutter: ^1.1.0           # Storage locale (storico + preferenze)
+  flutter_localizations: sdk: flutter
+  intl: ^0.20.2
 
 dev_dependencies:
-  build_runner: ^2.x
-  freezed: ^2.x
-  json_serializable: ^6.x
-  flutter_test:
-    sdk: flutter
-  mocktail: ^1.x                 # Mocking per unit test
-  flutter_launcher_icons: ^0.x   # Generazione icone store da sorgente 1024×1024
-  flutter_native_splash: ^2.x    # Splash screen nativa (Android + iOS)
+  build_runner: ^2.4.14
+  freezed: ^3.2.5
+  json_serializable: ^6.9.3
+  mocktail: ^1.0.4
+  flutter_lints: ^5.0.0
+  flutter_native_splash: ^2.4.3  # Splash screen nativa (Android + iOS)
+  flutter_launcher_icons: ^0.x   # Da aggiungere — generazione icone store da sorgente 1024×1024
+  in_app_review: ^2.x            # Da aggiungere — prompt valutazione store
 ```
 
 ---
@@ -74,37 +70,38 @@ lib/
 │   ├── models/
 │   │   ├── product.dart                 # Modello prodotto (freezed)
 │   │   ├── nutrition_data.dart          # Dati nutrizionali (freezed + json_serializable)
-│   │   ├── keto_score.dart             # Risultato scoring (freezed)
+│   │   ├── keto_score.dart              # Risultato scoring (freezed)
 │   │   └── scan_record.dart            # Record storico (plain Dart, toJson/fromJson)
 │   ├── services/
 │   │   ├── open_food_facts_service.dart # Chiamate API OFF
 │   │   └── scoring_service.dart        # Calcolo punteggio keto
 │   ├── storage/
-│   │   └── history_repository.dart     # Persistenza storico su Hive (Box<String>)
+│   │   ├── history_repository.dart     # Persistenza storico su Hive (Box<String>)
+│   │   └── prefs_repository.dart       # Preferenze app su Hive (es. onboarding_seen)
 │   └── utils/
-│       └── nutrition_helpers.dart       # calcolo net carbs
+│       └── nutrition_helpers.dart      # Calcolo net carbs
 ├── features/
 │   ├── home/
-│   │   └── home_page.dart              # Schermata iniziale (bottoni SCANSIONA + STORICO)
+│   │   ├── home_page.dart              # Schermata iniziale (bottoni SCANSIONA + STORICO, trigger onboarding)
+│   │   └── widgets/
+│   │       └── onboarding_dialog.dart  # Dialog spiegazione score, al primo avvio e via pulsante "i"
 │   ├── history/
 │   │   ├── history_page.dart           # Lista scansioni raggruppate per data
 │   │   └── history_provider.dart       # HistoryNotifier + ScanAndSaveService
-│   ├── onboarding/
-│   │   └── onboarding_page.dart        # [TODO] Prima apertura: spiega lo score keto
 │   ├── scan/
 │   │   ├── scan_page.dart
-│   │   └── scan_provider.dart          # Salva in storico dopo ogni scan riuscito
+│   │   └── scan_provider.dart          # Cerca in cache locale, poi API; salva in storico
 │   ├── product_detail/
-│   │   ├── product_detail_page.dart
+│   │   ├── product_detail_page.dart    # AppBar con pulsante "i" per onboarding
 │   │   ├── widgets/
 │   │   │   ├── score_gauge_widget.dart
 │   │   │   ├── macro_bar_widget.dart
 │   │   │   └── score_badge_widget.dart
 │   │   └── product_detail_provider.dart
-│   └── settings/                        # Predisposta per Milestone 02
+│   └── settings/                       # Predisposta per Milestone 02
 ├── l10n/
-│   ├── app_it.arb                       # Stringhe IT
-│   └── app_en.arb                       # Stringhe EN
+│   ├── app_it.arb                      # Stringhe IT
+│   └── app_en.arb                      # Stringhe EN
 └── main.dart
 
 assets/
@@ -243,7 +240,7 @@ enum ScoreLabel { excellent, good, fair, bad, noData }
     │                    ▼
     │              [Product + NutritionData]
     │                    │
-    │                    └──► salva in storico locale (Hive, max 10)
+    │                    └──► salva in storico locale (Hive, max configurabile)
     │
     ▼
 [ProductDetailProvider] ──► [ScoringService.calculate(nutrition, config)]
@@ -361,12 +358,12 @@ flutter test --coverage
 ### Requisiti store obbligatori
 - [x] App icon generata per Android/iOS/macOS (sorgente 768×768 via `sips`)
 - [ ] App icon via `flutter_launcher_icons` da sorgente 1024×1024 (sostituisce generazione manuale)
-- [x] Splash screen con `flutter_native_splash` (sfondo bianco, icona centrata) + Flutter `SplashPage` con spinner e "Caricamento..."
+- [x] Splash screen nativa con `flutter_native_splash` (sfondo bianco, icona centrata; nessuna SplashPage Flutter)
 - [ ] Privacy Policy pubblicata su URL pubblico
 - [ ] Testo store scritto: titolo, sottotitolo, descrizione breve e lunga (IT + EN)
 - [ ] Screenshot store pronti: iPhone 6.7", iPad (min 3 per Apple, min 2 per Google)
 
 ### Nice-to-have prima del lancio
-- [ ] Onboarding al primo avvio (spiega score keto, si mostra solo una volta)
+- [x] Onboarding al primo avvio (dialog scrollabile che spiega lo score keto; si mostra solo una volta, poi accessibile via pulsante "i" su home e scheda prodotto)
 - [x] Storico scansioni in locale (Hive, max configurabile via `history.max_items` in config, default 25)
-- [ ] Prompt valutazione app dopo la 3ª scansione riuscita (`in_app_review`)
+- [ ] Prompt valutazione app dopo la 3ª scansione riuscita (`in_app_review`, da aggiungere a pubspec)

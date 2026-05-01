@@ -10,7 +10,7 @@ Leggi questo file per orientarti. Ogni documento ha uno scopo preciso: non dupli
 |---|---|
 | `01-project-overview.md` | Cos'è l'app, stack tecnico, architettura, decisioni già prese, regole di sviluppo |
 | `02-business-logic.md` | Modello freemium, flussi utente, cosa è free/paid, regole di monetizzazione |
-| `MILESTONE_01.md` | Specifiche implementative della milestone corrente (Solo Scan) |
+| `MILESTONE_01.md` | Specifiche implementative della milestone corrente (Scan, Storico, Onboarding) |
 
 ## Documento esterno rilevante
 

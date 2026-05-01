@@ -16,9 +16,9 @@ I dati nutrizionali provengono dall'API pubblica e gratuita di **Open Food Facts
 
 ## Stato attuale del progetto
 
-- **Milestone 01 in corso** — core app completato, mancano i requisiti store per la pubblicazione.
-- Core funzionante: scan → score → scheda prodotto, storico locale (Hive), gestione errori, i18n IT+EN, font DM Sans.
-- App icon generata per Android/iOS/macOS. Splash screen, Privacy Policy e screenshot store ancora da fare.
+- **Milestone 01 quasi completa** — core app completo, mancano requisiti store per la pubblicazione.
+- Core funzionante: scan → score → scheda prodotto, storico locale (Hive), onboarding dialog al primo avvio, gestione errori, i18n IT+EN, font DM Sans.
+- App icon generata per Android/iOS/macOS. Splash screen nativa implementata. Mancano: icone store via `flutter_launcher_icons`, Privacy Policy, screenshot store, testo store.
 - Testato su Android (Pixel 7). iOS non ancora verificato.
 - Vedi `MILESTONE_01.md` checklist per lo stato dettagliato.
 
@@ -71,16 +71,17 @@ ketobuddy/
 ├── lib/
 │   ├── core/
 │   │   ├── config/           # keto_score_config.json loader
-│   │   ├── models/           # Product, NutritionData, KetoScore
+│   │   ├── models/           # Product, NutritionData, KetoScore, ScanRecord
 │   │   ├── services/         # OpenFoodFactsService, ScoringService
+│   │   ├── storage/          # HistoryRepository (Hive), PrefsRepository (Hive)
 │   │   └── utils/
 │   ├── features/
 │   │   ├── home/             # Schermata iniziale (logo + bottoni scan + storico)
+│   │   │   └── widgets/      # onboarding_dialog.dart
 │   │   ├── history/          # Storico scansioni locale (lista + provider)
 │   │   ├── scan/             # Barcode scanner UI + logic
 │   │   ├── product_detail/   # Scheda prodotto con score
-│   │   ├── settings/         # [FUTURO M02] Limiti giornalieri, preferenze (cartella predisposta)
-│   │   └── diary/            # [FUTURO M03] Diario alimentare giornaliero (da creare)
+│   │   └── settings/         # [FUTURO M02] Limiti giornalieri, preferenze (cartella predisposta)
 │   └── main.dart
 ├── assets/
 │   ├── config/
@@ -117,7 +118,6 @@ Scansione barcode → scheda prodotto con score keto + storico locale. Nessun ac
 - Impostazione limiti giornalieri carboidrati (default: 20g net carbs)
 - Scelta tipo keto: Standard / Lazy / Carnivore
 - Indicatore visivo progressivo per la soglia giornaliera
-- ~~Storico locale scansioni~~ → già implementato in M01
 
 ### Milestone 03 — Freemium e Diario
 - Integrazione RevenueCat per subscription (es. 2,99€/mese)
