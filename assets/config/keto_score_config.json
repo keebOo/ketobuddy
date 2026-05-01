@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "description": "Configurazione algoritmo scoring keto - modificare qui i pesi senza toccare il codice",
+
+  "net_carbs": {
+    "description": "Net carbs = carbs_totali - fibre. Parametro principale.",
+    "weight": 0.50,
+    "thresholds_per_100g": {
+      "excellent": { "max": 2.0,  "score": 100 },
+      "good":      { "max": 5.0,  "score": 75  },
+      "fair":      { "max": 10.0, "score": 45  },
+      "poor":      { "max": 20.0, "score": 20  },
+      "bad":       { "min": 20.0, "score": 0   }
+    }
+  },
+
+  "fat_protein_ratio": {
+    "description": "Keto ideale: 70-75% calorie da grassi, 20-25% da proteine. Ratio grassi/proteine > 1.5 è ottimale.",
+    "weight": 0.25,
+    "thresholds": {
+      "excellent": { "min_ratio": 2.0,  "score": 100 },
+      "good":      { "min_ratio": 1.5,  "score": 80  },
+      "fair":      { "min_ratio": 1.0,  "score": 50  },
+      "poor":      { "min_ratio": 0.5,  "score": 25  },
+      "bad":       { "max_ratio": 0.5,  "score": 0   }
+    }
+  },
+
+  "sugar_penalty": {
+    "description": "Penalizzazione per zuccheri semplici presenti (per 100g).",
+    "weight": 0.15,
+    "thresholds_per_100g": {
+      "none":   { "max": 0.5, "penalty": 0   },
+      "low":    { "max": 2.0, "penalty": 10  },
+      "medium": { "max": 5.0, "penalty": 25  },
+      "high":   { "min": 5.0, "penalty": 50  }
+    }
+  },
+
+  "sweetener_rules": {
+    "description": "Alcuni dolcificanti alzano la glicemia e vanno penalizzati anche in keto.",
+    "ok": ["erythritol", "stevia", "monk-fruit", "xylitol", "allulose"],
+    "penalize": ["maltitol", "sorbitol", "sucralose", "aspartame", "glucose-syrup", "maltodextrin"],
+    "penalty_if_bad_sweetener": 20
+  },
+
+  "fiber_bonus": {
+    "description": "Le fibre abbassano i net carbs e sono premiate.",
+    "bonus_per_gram_per_100g": 0.5,
+    "max_bonus": 10
+  },
+
+  "missing_data_policy": {
+    "description": "Cosa fare quando mancano dati critici.",
+    "if_carbs_missing": "show_no_score",
+    "if_fiber_missing": "assume_zero",
+    "if_fat_missing": "skip_ratio_component",
+    "if_protein_missing": "skip_ratio_component"
+  }
+}

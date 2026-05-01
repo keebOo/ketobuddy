@@ -1,0 +1,54 @@
+{
+  "@@locale": "en",
+  "appTitle": "KetoBuddy",
+  "error": "Error",
+  "ok": "OK",
+  "cancel": "Cancel",
+  "retry": "Retry",
+  "loading": "Loading...",
+  "scanPageTitle": "Scan",
+  "scanInstructions": "Point the camera at the barcode",
+  "manualBarcodeHint": "Enter barcode manually",
+  "searchButton": "Search",
+  "productNotFound": "Product not found.\nYou can add it at openfoodfacts.org",
+  "noInternetConnection": "No internet connection",
+  "apiTimeout": "Request timed out",
+  "product": "Product",
+  "scoreExcellent": "Excellent for keto",
+  "scoreGood": "Good",
+  "scoreFair": "Poor",
+  "scoreBad": "Avoid",
+  "scoreNoData": "Insufficient data",
+  "insufficientDataDescription": "Nutritional data not available",
+  "netCarbs": "Net Carbs",
+  "netCarbsPer100g": "Net Carbs / 100g",
+  "carbohydrates": "Carbohydrates",
+  "fat": "Fat",
+  "proteins": "Proteins",
+  "fiber": "Fiber",
+  "sugars": "Sugars",
+  "energyKcal": "Energy",
+  "energyValue": "Energy: {value} kcal / 100g",
+  "@energyValue": {
+    "placeholders": {
+      "value": { "type": "String" }
+    }
+  },
+  "salt": "Salt",
+  "per100g": "per 100g",
+  "macrosPer100g": "Macronutrients per 100g",
+  "warningsTitle": "Warnings",
+  "warningBadSweetener": "Contains: {sweetener}",
+  "@warningBadSweetener": {
+    "placeholders": {
+      "sweetener": { "type": "String" }
+    }
+  },
+  "errorGeneric": "Error: {message}",
+  "@errorGeneric": {
+    "placeholders": {
+      "message": { "type": "String" }
+    }
+  },
+  "scanAgain": "Scan another product"
+}
