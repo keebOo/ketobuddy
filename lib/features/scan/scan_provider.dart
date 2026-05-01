@@ -38,13 +38,27 @@ class ScanNotifier extends Notifier<ScanState> {
     if (state is ScanLoading) return;
     state = const ScanLoading();
     try {
-      final service = ref.read(openFoodFactsServiceProvider);
-      final product = await service.fetchProduct(barcode);
+      final product = await _fetchProduct(barcode);
       await ref.read(scanAndSaveProvider).saveProduct(product);
       state = ScanSuccess(product);
     } on OpenFoodFactsException catch (e) {
       state = ScanError(e.message, e.type);
     }
+  }
+
+  Future<Product> _fetchProduct(String barcode) async {
+    // Cerca nella cache locale prima di fare una chiamata di rete.
+    // Salta la cache se nutritionData è null (prodotto scansionato in precedenza
+    // senza dati: potrebbe averli ora su OpenFoodFacts).
+    final cached = ref
+        .read(historyRepositoryProvider)
+        .getAll()
+        .where((r) => r.barcode == barcode && r.nutritionData != null)
+        .firstOrNull;
+
+    if (cached != null) return cached.toProduct();
+
+    return ref.read(openFoodFactsServiceProvider).fetchProduct(barcode);
   }
 
   void reset() {

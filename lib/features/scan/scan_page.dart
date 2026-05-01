@@ -13,18 +13,54 @@ class ScanPage extends ConsumerStatefulWidget {
   ConsumerState<ScanPage> createState() => _ScanPageState();
 }
 
-class _ScanPageState extends ConsumerState<ScanPage> {
+class _ScanPageState extends ConsumerState<ScanPage>
+    with SingleTickerProviderStateMixin {
   final MobileScannerController _controller = MobileScannerController();
   final TextEditingController _manualController = TextEditingController();
-  bool _scanning = false; // true = camera ferma, in attesa di risposta o UI
+
+  // true mentre aspettiamo una risposta o gestiamo l'UI post-scan
+  bool _scanning = false;
+  // true solo quando _controller.stop() è stato chiamato esplicitamente
+  bool _cameraStopped = false;
   String? _lastBarcode;
+
+  late final AnimationController _overlayController;
+  late final Animation<double> _overlayOpacity;
+
+  @override
+  void initState() {
+    super.initState();
+    _overlayController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),      // fade-in veloce
+      reverseDuration: const Duration(milliseconds: 900), // fade-out ~1 sec
+    );
+    _overlayOpacity =
+        Tween<double>(begin: 0.0, end: 0.8).animate(_overlayController);
+  }
 
   @override
   void dispose() {
+    _overlayController.dispose();
     _controller.dispose();
     _manualController.dispose();
     super.dispose();
   }
+
+  // --- overlay helpers ---
+
+  void _showOverlay() => _overlayController.forward();
+
+  void _hideOverlay() {
+    if (_cameraStopped) _controller.start();
+    _overlayController.reverse().whenComplete(() {
+      if (!mounted) return;
+      _scanning = false;
+      _cameraStopped = false;
+    });
+  }
+
+  // --- scan logic ---
 
   void _onBarcodeDetected(BarcodeCapture capture) {
     if (_scanning) return;
@@ -32,7 +68,9 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     if (barcode == null) return;
     _scanning = true;
     _lastBarcode = barcode;
-    _controller.stop();
+    // La camera resta attiva (preview live): solo _scanning blocca nuovi barcode.
+    // _controller.stop() viene chiamato solo in caso di ScanSuccess.
+    _showOverlay();
     ref.read(scanProvider.notifier).scan(barcode);
   }
 
@@ -41,17 +79,17 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     _scanning = true;
     _lastBarcode = barcode;
     _controller.stop();
+    _cameraStopped = true;
+    _showOverlay();
     await ref.read(scanProvider.notifier).scan(barcode);
   }
 
   void _restartScanner() {
     ref.read(scanProvider.notifier).reset();
-    Future.delayed(const Duration(seconds: 1), () {
-      if (!mounted) return;
-      _scanning = false;
-      _controller.start();
-    });
+    _hideOverlay();
   }
+
+  // --- build ---
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +98,9 @@ class _ScanPageState extends ConsumerState<ScanPage> {
 
     ref.listen<ScanState>(scanProvider, (prev, next) {
       if (next is ScanSuccess) {
+        // Fermiamo la camera solo adesso (navigazione imminente)
+        _controller.stop();
+        _cameraStopped = true;
         Navigator.of(context)
             .push(MaterialPageRoute(
               builder: (_) => ProductDetailPage(product: next.product),
@@ -72,13 +113,48 @@ class _ScanPageState extends ConsumerState<ScanPage> {
 
     final l = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l.appTitle),
-        centerTitle: true,
+      appBar: AppBar(title: Text(l.appTitle), centerTitle: true),
+      body: Stack(
+        children: [
+          isWide ? _desktopLayout(state, l) : _mobileLayout(state, l),
+          // Overlay scuro animato sopra camera e controlli manuali
+          AnimatedBuilder(
+            animation: _overlayOpacity,
+            builder: (context, _) {
+              if (_overlayOpacity.value == 0) return const SizedBox.shrink();
+              return Positioned.fill(
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: _overlayOpacity.value),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+          // Spinner visibile sopra l'overlay durante la chiamata API
+          if (state is ScanLoading)
+            const Positioned.fill(
+              child: IgnorePointer(
+                child: Center(
+                  child: SizedBox(
+                    width: 44,
+                    height: 44,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
-      body: isWide ? _desktopLayout(state, l) : _mobileLayout(state, l),
     );
   }
+
+  // --- layout ---
 
   Widget _mobileLayout(ScanState state, AppLocalizations l) {
     return Column(
@@ -103,9 +179,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
             onDetect: _onBarcodeDetected,
           ),
         ),
-        Expanded(
-          child: Center(child: _manualInputSection(state, l)),
-        ),
+        Expanded(child: Center(child: _manualInputSection(state, l))),
       ],
     );
   }
@@ -136,8 +210,8 @@ class _ScanPageState extends ConsumerState<ScanPage> {
                     decoration: InputDecoration(
                       hintText: l.manualBarcodeHint,
                       border: const OutlineInputBorder(),
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
                     ),
                     keyboardType: TextInputType.number,
                     onSubmitted: _lookupManual,
@@ -145,7 +219,8 @@ class _ScanPageState extends ConsumerState<ScanPage> {
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
-                  onPressed: () => _lookupManual(_manualController.text.trim()),
+                  onPressed: () =>
+                      _lookupManual(_manualController.text.trim()),
                   child: Text(l.searchButton),
                 ),
               ],
@@ -156,14 +231,18 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     );
   }
 
+  // --- error dialog ---
+
   void _showError(BuildContext context, ScanError error) {
     final l = AppLocalizations.of(context)!;
     final isRetryable = error.errorType == OpenFoodFactsErrorType.timeout ||
         error.errorType == OpenFoodFactsErrorType.noInternet;
 
-    showDialog(
+    showDialog<void>(
       context: context,
       barrierDismissible: false,
+      // Trasparente: l'overlay scuro fa già da sfondo al dialog
+      barrierColor: Colors.transparent,
       builder: (ctx) => AlertDialog(
         title: Text(l.error),
         content: Text(_errorMessage(error, l)),
