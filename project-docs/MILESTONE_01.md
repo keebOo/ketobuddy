@@ -361,7 +361,7 @@ flutter test --coverage
 ### Requisiti store obbligatori
 - [x] App icon generata per Android/iOS/macOS (sorgente 768×768 via `sips`)
 - [ ] App icon via `flutter_launcher_icons` da sorgente 1024×1024 (sostituisce generazione manuale)
-- [ ] Splash screen con `flutter_native_splash` (sfondo bianco, icona centrata)
+- [x] Splash screen con `flutter_native_splash` (sfondo bianco, icona centrata) + Flutter `SplashPage` con spinner e "Caricamento..."
 - [ ] Privacy Policy pubblicata su URL pubblico
 - [ ] Testo store scritto: titolo, sottotitolo, descrizione breve e lunga (IT + EN)
 - [ ] Screenshot store pronti: iPhone 6.7", iPad (min 3 per Apple, min 2 per Google)

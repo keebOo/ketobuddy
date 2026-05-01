@@ -28,6 +28,7 @@ dev_dependencies:
   json_serializable: ^6.9.3
   mocktail: ^1.0.4
   flutter_lints: ^5.0.0
+  flutter_native_splash: ^2.4.3
 
 flutter:
   uses-material-design: true
@@ -39,3 +40,14 @@ flutter:
     - family: DMSans
       fonts:
         - asset: assets/font/DMSans.ttf
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/appicon.png
+  ios: true
+  android: true
+  web: false
+  # NOTA: dopo aver rieseguito flutter_native_splash:create, rimuovere manualmente
+  # windowSplashScreenAnimatedIcon e windowSplashScreenIconBackgroundColor
+  # da values-v31/styles.xml e values-night-v31/styles.xml
+  # per evitare il circle-clip dell'icona su Android 12+.
