@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
+import '../history/history_page.dart';
 import '../scan/scan_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -17,7 +18,7 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
             children: [
-              const Spacer(flex: 3),
+              const Spacer(flex: 2),
               Image.asset(
                 'assets/images/appicon.png',
                 height: screenHeight * 0.28,
@@ -43,7 +44,7 @@ class HomePage extends StatelessWidget {
                   letterSpacing: 0.5,
                 ),
               ),
-              const Spacer(flex: 4),
+              const Spacer(flex: 3),
               SizedBox(
                 width: double.infinity,
                 height: 54,
@@ -61,6 +62,31 @@ class HomePage extends StatelessWidget {
                   ),
                   child: Text(
                     l.homeScanButton.toUpperCase(),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: const Color(0xFF2E7D32),
+                    side: const BorderSide(color: Color(0xFF2E7D32), width: 1.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const HistoryPage()),
+                  ),
+                  child: Text(
+                    l.homeHistoryButton.toUpperCase(),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

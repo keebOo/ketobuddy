@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/models/product.dart';
 import '../../core/services/open_food_facts_service.dart';
+import '../history/history_provider.dart';
 
 final openFoodFactsServiceProvider = Provider<OpenFoodFactsService>((ref) {
   return OpenFoodFactsService();
@@ -39,6 +40,7 @@ class ScanNotifier extends Notifier<ScanState> {
     try {
       final service = ref.read(openFoodFactsServiceProvider);
       final product = await service.fetchProduct(barcode);
+      await ref.read(scanAndSaveProvider).saveProduct(product);
       state = ScanSuccess(product);
     } on OpenFoodFactsException catch (e) {
       state = ScanError(e.message, e.type);

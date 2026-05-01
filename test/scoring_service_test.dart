@@ -33,6 +33,7 @@ ScoreConfig _testConfig() => ScoreConfig(
       sweetenerPenalty: 20,
       fiberBonusPerGram: 0.5,
       fiberMaxBonus: 10,
+      historyMaxItems: 25,
     );
 
 void main() {

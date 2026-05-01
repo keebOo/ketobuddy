@@ -131,4 +131,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appVersion => 'v0.1';
+
+  @override
+  String get homeHistoryButton => 'History';
+
+  @override
+  String get historyTitle => 'History';
+
+  @override
+  String get historyEmpty => 'No recent scans';
+
+  @override
+  String get historyEmptySubtitle => 'Scan a product to get started';
+
+  @override
+  String get historyToday => 'Today';
+
+  @override
+  String get historyYesterday => 'Yesterday';
+
+  @override
+  String get historyClear => 'Clear history';
+
+  @override
+  String get historyClearTitle => 'Clear history';
+
+  @override
+  String get historyClearConfirm => 'Delete all recent scans?';
 }

@@ -53,5 +53,14 @@
   "scanAgain": "Scan another product",
   "homeSubtitle": "Keto Barcode Scanner",
   "homeScanButton": "Scan",
-  "appVersion": "v0.1"
+  "appVersion": "v0.1",
+  "homeHistoryButton": "History",
+  "historyTitle": "History",
+  "historyEmpty": "No recent scans",
+  "historyEmptySubtitle": "Scan a product to get started",
+  "historyToday": "Today",
+  "historyYesterday": "Yesterday",
+  "historyClear": "Clear history",
+  "historyClearTitle": "Clear history",
+  "historyClearConfirm": "Delete all recent scans?"
 }

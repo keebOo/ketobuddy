@@ -131,4 +131,32 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get appVersion => 'v0.1';
+
+  @override
+  String get homeHistoryButton => 'Storico';
+
+  @override
+  String get historyTitle => 'Storico';
+
+  @override
+  String get historyEmpty => 'Nessuna scansione recente';
+
+  @override
+  String get historyEmptySubtitle => 'Scansiona un prodotto per iniziare';
+
+  @override
+  String get historyToday => 'Oggi';
+
+  @override
+  String get historyYesterday => 'Ieri';
+
+  @override
+  String get historyClear => 'Cancella storico';
+
+  @override
+  String get historyClearTitle => 'Cancella storico';
+
+  @override
+  String get historyClearConfirm =>
+      'Vuoi eliminare tutte le scansioni recenti?';
 }

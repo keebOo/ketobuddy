@@ -13,6 +13,7 @@ class ScoreConfig {
   final int sweetenerPenalty;
   final double fiberBonusPerGram;
   final double fiberMaxBonus;
+  final int historyMaxItems;
 
   const ScoreConfig({
     required this.netCarbsWeight,
@@ -26,6 +27,7 @@ class ScoreConfig {
     required this.sweetenerPenalty,
     required this.fiberBonusPerGram,
     required this.fiberMaxBonus,
+    required this.historyMaxItems,
   });
 
   factory ScoreConfig.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class ScoreConfig {
       sweetenerPenalty: (json['sweetener_rules']['penalty_if_bad_sweetener'] as num).toInt(),
       fiberBonusPerGram: (json['fiber_bonus']['bonus_per_gram_per_100g'] as num).toDouble(),
       fiberMaxBonus: (json['fiber_bonus']['max_bonus'] as num).toDouble(),
+      historyMaxItems: (json['history']['max_items'] as num).toInt(),
     );
   }
 }

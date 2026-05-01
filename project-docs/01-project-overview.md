@@ -17,7 +17,7 @@ I dati nutrizionali provengono dall'API pubblica e gratuita di **Open Food Facts
 ## Stato attuale del progetto
 
 - **Milestone 01 in corso** — core app completato, mancano i requisiti store per la pubblicazione.
-- Core funzionante: scan → score → scheda prodotto, gestione errori, i18n IT+EN, font DM Sans.
+- Core funzionante: scan → score → scheda prodotto, storico locale (Hive), gestione errori, i18n IT+EN, font DM Sans.
 - App icon generata per Android/iOS/macOS. Splash screen, Privacy Policy e screenshot store ancora da fare.
 - Testato su Android (Pixel 7). iOS non ancora verificato.
 - Vedi `MILESTONE_01.md` checklist per lo stato dettagliato.
@@ -75,7 +75,8 @@ ketobuddy/
 │   │   ├── services/         # OpenFoodFactsService, ScoringService
 │   │   └── utils/
 │   ├── features/
-│   │   ├── home/             # Schermata iniziale (logo + bottone scan)
+│   │   ├── home/             # Schermata iniziale (logo + bottoni scan + storico)
+│   │   ├── history/          # Storico scansioni locale (lista + provider)
 │   │   ├── scan/             # Barcode scanner UI + logic
 │   │   ├── product_detail/   # Scheda prodotto con score
 │   │   ├── settings/         # [FUTURO M02] Limiti giornalieri, preferenze (cartella predisposta)
@@ -110,13 +111,13 @@ Colori testo ricorrenti: `#1A1A1A` (primario), `#6B7C6B` (sottotitoli/accento ve
 ## Roadmap ad alto livello
 
 ### Milestone 01 — Solo Scan (ATTUALE)
-Scansione barcode → scheda prodotto con score keto. Nessun account, nessun salvataggio, nessun pagamento. Dettaglio in `MILESTONE_01.md`.
+Scansione barcode → scheda prodotto con score keto + storico locale. Nessun account, nessun pagamento. Dettaglio in `MILESTONE_01.md`.
 
 ### Milestone 02 — Settings e personalizzazione
 - Impostazione limiti giornalieri carboidrati (default: 20g net carbs)
 - Scelta tipo keto: Standard / Lazy / Carnivore
 - Indicatore visivo progressivo per la soglia giornaliera
-- Storico locale ultimi 20 prodotti scansionati (solo cache, no account)
+- ~~Storico locale scansioni~~ → già implementato in M01
 
 ### Milestone 03 — Freemium e Diario
 - Integrazione RevenueCat per subscription (es. 2,99€/mese)

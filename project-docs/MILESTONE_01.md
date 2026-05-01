@@ -70,24 +70,30 @@ dev_dependencies:
 lib/
 ├── core/
 │   ├── config/
-│   │   └── score_config_loader.dart     # Carica e parsa keto_score_config.json
+│   │   └── score_config_loader.dart     # Carica e parsa keto_score_config.json (incl. history.max_items)
 │   ├── models/
 │   │   ├── product.dart                 # Modello prodotto (freezed)
-│   │   ├── nutrition_data.dart          # Dati nutrizionali (freezed)
-│   │   └── keto_score.dart             # Risultato scoring (freezed)
+│   │   ├── nutrition_data.dart          # Dati nutrizionali (freezed + json_serializable)
+│   │   ├── keto_score.dart             # Risultato scoring (freezed)
+│   │   └── scan_record.dart            # Record storico (plain Dart, toJson/fromJson)
 │   ├── services/
 │   │   ├── open_food_facts_service.dart # Chiamate API OFF
 │   │   └── scoring_service.dart        # Calcolo punteggio keto
+│   ├── storage/
+│   │   └── history_repository.dart     # Persistenza storico su Hive (Box<String>)
 │   └── utils/
 │       └── nutrition_helpers.dart       # calcolo net carbs
 ├── features/
 │   ├── home/
-│   │   └── home_page.dart              # Schermata iniziale
+│   │   └── home_page.dart              # Schermata iniziale (bottoni SCANSIONA + STORICO)
+│   ├── history/
+│   │   ├── history_page.dart           # Lista scansioni raggruppate per data
+│   │   └── history_provider.dart       # HistoryNotifier + ScanAndSaveService
 │   ├── onboarding/
 │   │   └── onboarding_page.dart        # [TODO] Prima apertura: spiega lo score keto
 │   ├── scan/
 │   │   ├── scan_page.dart
-│   │   └── scan_provider.dart
+│   │   └── scan_provider.dart          # Salva in storico dopo ogni scan riuscito
 │   ├── product_detail/
 │   │   ├── product_detail_page.dart
 │   │   ├── widgets/
@@ -175,6 +181,11 @@ Questo file è il cuore dell'algoritmo. Non modificare i pesi direttamente nel c
     "if_fiber_missing": "assume_zero",
     "if_fat_missing": "skip_ratio_component",
     "if_protein_missing": "skip_ratio_component"
+  },
+
+  "history": {
+    "description": "Configurazione storico scansioni locale.",
+    "max_items": 25
   }
 }
 ```
@@ -357,5 +368,5 @@ flutter test --coverage
 
 ### Nice-to-have prima del lancio
 - [ ] Onboarding al primo avvio (spiega score keto, si mostra solo una volta)
-- [ ] Storico ultime 10 scansioni in locale (Hive)
+- [x] Storico scansioni in locale (Hive, max configurabile via `history.max_items` in config, default 25)
 - [ ] Prompt valutazione app dopo la 3ª scansione riuscita (`in_app_review`)

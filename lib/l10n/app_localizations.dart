@@ -331,6 +331,60 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'v0.1'**
   String get appVersion;
+
+  /// No description provided for @homeHistoryButton.
+  ///
+  /// In it, this message translates to:
+  /// **'Storico'**
+  String get homeHistoryButton;
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Storico'**
+  String get historyTitle;
+
+  /// No description provided for @historyEmpty.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessuna scansione recente'**
+  String get historyEmpty;
+
+  /// No description provided for @historyEmptySubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Scansiona un prodotto per iniziare'**
+  String get historyEmptySubtitle;
+
+  /// No description provided for @historyToday.
+  ///
+  /// In it, this message translates to:
+  /// **'Oggi'**
+  String get historyToday;
+
+  /// No description provided for @historyYesterday.
+  ///
+  /// In it, this message translates to:
+  /// **'Ieri'**
+  String get historyYesterday;
+
+  /// No description provided for @historyClear.
+  ///
+  /// In it, this message translates to:
+  /// **'Cancella storico'**
+  String get historyClear;
+
+  /// No description provided for @historyClearTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Cancella storico'**
+  String get historyClearTitle;
+
+  /// No description provided for @historyClearConfirm.
+  ///
+  /// In it, this message translates to:
+  /// **'Vuoi eliminare tutte le scansioni recenti?'**
+  String get historyClearConfirm;
 }
 
 class _AppLocalizationsDelegate

@@ -56,5 +56,10 @@
     "if_fiber_missing": "assume_zero",
     "if_fat_missing": "skip_ratio_component",
     "if_protein_missing": "skip_ratio_component"
+  },
+
+  "history": {
+    "description": "Configurazione storico scansioni locale.",
+    "max_items": 25
   }
 }
