@@ -16,11 +16,11 @@ I dati nutrizionali provengono dall'API pubblica e gratuita di **Open Food Facts
 
 ## Stato attuale del progetto
 
-- **Milestone 01 completata** ✅ (vedi `MILESTONE_01.md` per il dettaglio).
-- i18n: `app_it.arb` e `app_en.arb` presenti, nessuna stringa hardcoded nei widget.
-- App icon generata per Android, iOS e macOS da `appicon.png` sorgente (768×768).
+- **Milestone 01 in corso** — core app completato, mancano i requisiti store per la pubblicazione.
+- Core funzionante: scan → score → scheda prodotto, gestione errori, i18n IT+EN, font DM Sans.
+- App icon generata per Android/iOS/macOS. Splash screen, Privacy Policy e screenshot store ancora da fare.
 - Testato su Android (Pixel 7). iOS non ancora verificato.
-- Prossima milestone: **Milestone 02 — Settings e personalizzazione**.
+- Vedi `MILESTONE_01.md` checklist per lo stato dettagliato.
 
 ---
 

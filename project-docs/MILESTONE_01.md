@@ -7,14 +7,16 @@
 
 ## Obiettivo della milestone
 
-Realizzare una app Flutter funzionante che permetta di:
-1. Scansionare un codice a barre con la fotocamera
-2. Recuperare i dati nutrizionali da Open Food Facts
-3. Calcolare e mostrare un punteggio di compatibilità keto (0–100)
-4. Visualizzare una scheda prodotto con macro e score
+Realizzare e **pubblicare** la prima versione di produzione dell'app su App Store e Google Play. Il core è la scansione keto, senza account né pagamenti. Prima di pubblicare devono essere soddisfatti tutti i requisiti obbligatori degli store.
 
-**Nessun account. Nessun salvataggio persistente. Nessun pagamento.**
-Solo scan → risultato. Deve funzionare su Android, iOS e Desktop (per sviluppo/test).
+Feature core:
+1. Home page con logo e bottone di accesso alla scansione
+2. Scansione barcode → scheda prodotto con score keto (0–100)
+3. Dati nutrizionali da Open Food Facts, gestione errori completa
+4. Storico ultime scansioni in memoria locale (no account)
+
+**Nessun account. Nessun pagamento. Nessun backend.**
+Deve funzionare su Android, iOS e Desktop (per sviluppo/test).
 
 ---
 
@@ -43,7 +45,8 @@ dependencies:
   dio: ^5.x                      # HTTP client per Open Food Facts API
   freezed_annotation: ^2.x       # Modelli immutabili
   json_annotation: ^4.x          # JSON serialization
-  hive_flutter: ^1.x             # Storage locale (cache scansioni recenti)
+  hive_flutter: ^1.x             # Storage locale (storico scansioni)
+  in_app_review: ^2.x            # Prompt valutazione store
   flutter_localizations:         # i18n predisposto
     sdk: flutter
   intl: ^0.x
@@ -55,11 +58,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^1.x                 # Mocking per unit test
+  flutter_launcher_icons: ^0.x   # Generazione icone store da sorgente 1024×1024
+  flutter_native_splash: ^2.x    # Splash screen nativa (Android + iOS)
 ```
 
 ---
 
-## Struttura cartelle da creare
+## Struttura cartelle
 
 ```
 lib/
@@ -74,26 +79,35 @@ lib/
 │   │   ├── open_food_facts_service.dart # Chiamate API OFF
 │   │   └── scoring_service.dart        # Calcolo punteggio keto
 │   └── utils/
-│       └── nutrition_helpers.dart       # es. calcolo net carbs
+│       └── nutrition_helpers.dart       # calcolo net carbs
 ├── features/
+│   ├── home/
+│   │   └── home_page.dart              # Schermata iniziale
+│   ├── onboarding/
+│   │   └── onboarding_page.dart        # [TODO] Prima apertura: spiega lo score keto
 │   ├── scan/
 │   │   ├── scan_page.dart
 │   │   └── scan_provider.dart
 │   ├── product_detail/
 │   │   ├── product_detail_page.dart
 │   │   ├── widgets/
-│   │   │   ├── score_gauge_widget.dart  # Cerchio/gauge con punteggio
-│   │   │   ├── macro_bar_widget.dart    # Barre macro (carbs/grassi/proteine)
-│   │   │   └── score_badge_widget.dart  # Badge colorato Eccellente/Buono/...
+│   │   │   ├── score_gauge_widget.dart
+│   │   │   ├── macro_bar_widget.dart
+│   │   │   └── score_badge_widget.dart
 │   │   └── product_detail_provider.dart
-│   └── settings/                        # Cartella vuota per ora, predisposta
+│   └── settings/                        # Predisposta per Milestone 02
 ├── l10n/
-│   └── app_it.arb                       # Stringhe UI in italiano
+│   ├── app_it.arb                       # Stringhe IT
+│   └── app_en.arb                       # Stringhe EN
 └── main.dart
 
 assets/
-└── config/
-    └── keto_score_config.json           # Algoritmo di scoring
+├── config/
+│   └── keto_score_config.json           # Algoritmo di scoring
+├── font/
+│   └── DMSans.ttf                       # Variable font (tutti i pesi)
+└── images/
+    └── appicon.png                      # Sorgente icona (768×768)
 ```
 
 ---
@@ -204,26 +218,26 @@ enum ScoreLabel { excellent, good, fair, bad, noData }
 
 ---
 
-## Flusso applicativo Milestone 01
+## Flusso applicativo
 
 ```
+[HomePage]
+    │ tap "SCANSIONA"
+    ▼
 [ScanPage]
-    │
-    │ barcode string
+    │ barcode rilevato → camera stop
     ▼
 [ScanProvider] ──► [OpenFoodFactsService.fetchProduct(barcode)]
     │                    │
-    │                    │ risposta JSON OFF
     │                    ▼
     │              [Product + NutritionData]
+    │                    │
+    │                    └──► salva in storico locale (Hive, max 10)
     │
-    │ product
     ▼
 [ProductDetailProvider] ──► [ScoringService.calculate(nutrition, config)]
     │                              │
-    │                              │ legge keto_score_config.json
-    │                              ▼
-    │                        [KetoScore]
+    │                              └──► legge keto_score_config.json
     │
     ▼
 [ProductDetailPage]
@@ -254,6 +268,29 @@ enum ScoreLabel { excellent, good, fair, bad, noData }
 - **Net carbs in evidenza**: mostrare sempre prominentemente i grammi di net carbs per 100g — è la metrica principale per un utente keto
 - **Warning dolcificanti**: se il prodotto contiene dolcificanti da penalizzare, mostrarli esplicitamente con un'icona ⚠️
 - **Desktop layout**: su schermi larghi, affiancare scanner (o input manuale barcode) e scheda prodotto
+
+---
+
+## Requisiti per la pubblicazione store
+
+### 🔴 Obbligatori (bloccanti per la review)
+
+| Item | Note |
+|---|---|
+| **Privacy Policy** | Pagina web pubblica (anche GitHub Pages). Deve dichiarare che l'app non raccoglie dati personali. Senza questa Apple e Google bloccano la review. |
+| **Icone store complete** | Usare `flutter_launcher_icons` con sorgente 1024×1024. Genera automaticamente tutti i formati richiesti da iOS e Android. |
+| **Splash screen** | Usare `flutter_native_splash`. Sfondo bianco con icona centrata, coerente con la home. |
+| **Testo store** | Titolo, sottotitolo, descrizione breve e lunga in italiano e inglese. Le keyword nel titolo/sottotitolo impattano la discoverability. |
+| **Screenshot store** | Apple: min 3, richiesti per iPhone 6.7" e iPad. Google: min 2. Girarli su simulatore Flutter. |
+
+### 🟡 Importanti (non bloccanti, ma consigliati prima del lancio)
+
+| Item | Note |
+|---|---|
+| **Onboarding al primo avvio** | Una schermata che spiega in 3 righe cos'è lo score keto e come interpretarlo. Necessaria per utenti non keto. Si mostra solo al primo lancio, poi non più. |
+| **Feedback visivo durante scan** | Loading indicator visibile mentre l'API risponde. Già presente (`CircularProgressIndicator`) ma da verificare che sia ben visibile su tutti i device. |
+| **Storico ultime scansioni** | Ultimi 10 prodotti scansionati in memoria locale (Hive, già dipendenza). Nessun account. Reset all'upgrade o su richiesta utente. |
+| **Prompt valutazione app** | Dopo la 3ª scansione riuscita, mostrare il prompt nativo di review (`in_app_review`). Le prime recensioni sono fondamentali per la visibilità store. |
 
 ---
 
@@ -295,16 +332,30 @@ flutter test --coverage
 
 ---
 
-## Checklist Milestone 01 completata quando...
+## Checklist Milestone 01 — pronta per pubblicazione quando...
 
+### Core app
 - [x] Home page con logo, titolo, sottotitolo e bottone "SCANSIONA"
-- [x] App icon configurata per Android, iOS e macOS (sorgente `appicon.png` 1024x1024)
+- [x] Font DM Sans applicato globalmente (variable font, tutti i pesi)
 - [x] Scansione barcode funzionante su Android e iOS (e Desktop via input manuale)
 - [x] Chiamata API Open Food Facts con gestione errori completa (404, timeout, no-internet, riprova)
 - [x] `keto_score_config.json` caricato a runtime, non hardcoded
 - [x] Score calcolato correttamente per tutti i casi test
-- [x] Scheda prodotto mostra: nome, immagine, score (0-100), label colorata, macro per 100g, net carbs, warning dolcificanti
+- [x] Scheda prodotto: nome, immagine, score (0-100), label colorata, macro per 100g, net carbs, warning dolcificanti
 - [x] Gestione graceful dei dati mancanti (badge "Dati insufficienti")
-- [x] Tutte le stringhe UI in file `.arb` — `app_it.arb` e `app_en.arb` completi, nessuna stringa hardcoded nei widget.
+- [x] Tutte le stringhe UI in `app_it.arb` e `app_en.arb`, nessuna stringa hardcoded
 - [x] Unit test `ScoringService` tutti verdi (6/6)
 - [x] Nessun crash su prodotti con dati parziali
+
+### Requisiti store obbligatori
+- [x] App icon generata per Android/iOS/macOS (sorgente 768×768 via `sips`)
+- [ ] App icon via `flutter_launcher_icons` da sorgente 1024×1024 (sostituisce generazione manuale)
+- [ ] Splash screen con `flutter_native_splash` (sfondo bianco, icona centrata)
+- [ ] Privacy Policy pubblicata su URL pubblico
+- [ ] Testo store scritto: titolo, sottotitolo, descrizione breve e lunga (IT + EN)
+- [ ] Screenshot store pronti: iPhone 6.7", iPad (min 3 per Apple, min 2 per Google)
+
+### Nice-to-have prima del lancio
+- [ ] Onboarding al primo avvio (spiega score keto, si mostra solo una volta)
+- [ ] Storico ultime 10 scansioni in locale (Hive)
+- [ ] Prompt valutazione app dopo la 3ª scansione riuscita (`in_app_review`)
