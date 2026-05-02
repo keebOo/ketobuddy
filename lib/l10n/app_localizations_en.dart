@@ -121,6 +121,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get tooltipScoreInfo => 'About the keto score';
+
+  @override
+  String get tooltipShare => 'Share';
+
+  @override
   String get scanAgain => 'Scan another product';
 
   @override

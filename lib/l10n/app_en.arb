@@ -50,6 +50,8 @@
       "message": { "type": "String" }
     }
   },
+  "tooltipScoreInfo": "About the keto score",
+  "tooltipShare": "Share",
   "scanAgain": "Scan another product",
   "homeSubtitle": "Keto Barcode Scanner",
   "homeScanButton": "Scan",

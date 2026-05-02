@@ -82,7 +82,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
           IconButton(
             icon: const Icon(Icons.info_outline),
             onPressed: () => showOnboardingDialog(context),
-            tooltip: 'Info',
+            tooltip: l.tooltipScoreInfo,
           ),
           IconButton(
             icon: _sharing
@@ -93,7 +93,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                   )
                 : const Icon(Icons.share_outlined),
             onPressed: _sharing ? null : _shareImage,
-            tooltip: 'Condividi',
+            tooltip: l.tooltipShare,
           ),
         ],
       ),

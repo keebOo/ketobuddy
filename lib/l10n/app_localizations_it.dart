@@ -121,6 +121,12 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get tooltipScoreInfo => 'Informazioni sul punteggio';
+
+  @override
+  String get tooltipShare => 'Condividi';
+
+  @override
   String get scanAgain => 'Scansiona altro prodotto';
 
   @override

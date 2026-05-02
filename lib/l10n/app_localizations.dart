@@ -308,6 +308,18 @@ abstract class AppLocalizations {
   /// **'Errore: {message}'**
   String errorGeneric(String message);
 
+  /// No description provided for @tooltipScoreInfo.
+  ///
+  /// In it, this message translates to:
+  /// **'Informazioni sul punteggio'**
+  String get tooltipScoreInfo;
+
+  /// No description provided for @tooltipShare.
+  ///
+  /// In it, this message translates to:
+  /// **'Condividi'**
+  String get tooltipShare;
+
   /// No description provided for @scanAgain.
   ///
   /// In it, this message translates to:

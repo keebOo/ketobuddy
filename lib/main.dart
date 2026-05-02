@@ -42,8 +42,8 @@ class KetoBuddyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('it'),
         Locale('en'),
+        Locale('it'),
       ],
       locale: _localeFromEnvironment(),
       theme: ThemeData(
