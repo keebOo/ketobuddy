@@ -6,6 +6,20 @@ import 'core/storage/prefs_repository.dart';
 import 'features/home/home_page.dart';
 import 'l10n/app_localizations.dart';
 
+/// Override lingua a compile-time (se vuota → lingua del dispositivo).
+/// Esempio: flutter run --dart-define=FORCE_LOCALE=en
+Locale? _localeFromEnvironment() {
+  const forced = String.fromEnvironment('FORCE_LOCALE');
+  switch (forced) {
+    case 'en':
+      return const Locale('en');
+    case 'it':
+      return const Locale('it');
+    default:
+      return null;
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HistoryRepository.init();
@@ -31,6 +45,7 @@ class KetoBuddyApp extends StatelessWidget {
         Locale('it'),
         Locale('en'),
       ],
+      locale: _localeFromEnvironment(),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2E7D32)),
         useMaterial3: true,
