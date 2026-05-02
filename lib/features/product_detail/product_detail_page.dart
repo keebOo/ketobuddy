@@ -1,27 +1,82 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../core/models/keto_score.dart';
 import '../../core/models/product.dart';
 import '../../l10n/app_localizations.dart';
 import '../home/widgets/onboarding_dialog.dart';
 import 'product_detail_provider.dart';
+import 'share_utils.dart';
 import 'widgets/macro_bar_widget.dart';
 import 'widgets/score_badge_widget.dart';
 import 'widgets/score_gauge_widget.dart';
 
-class ProductDetailPage extends ConsumerWidget {
+class ProductDetailPage extends ConsumerStatefulWidget {
   final Product product;
 
   const ProductDetailPage({super.key, required this.product});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProductDetailPage> createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
+  final GlobalKey _captureKey = GlobalKey();
+  bool _sharing = false;
+
+  Future<void> _shareImage() async {
+    if (_sharing) return;
+    final scoreAsync = ref.read(ketoScoreProvider(widget.product));
+    if (!scoreAsync.hasValue) return;
+    final score = scoreAsync.value!;
+    // Cattura valori dal context prima degli await
+    final bgColor = Theme.of(context).scaffoldBackgroundColor;
     final l = AppLocalizations.of(context)!;
-    final scoreAsync = ref.watch(ketoScoreProvider(product));
+    final productName = widget.product.name ?? l.product;
+
+    setState(() => _sharing = true);
+    try {
+      final boundary = _captureKey.currentContext?.findRenderObject()
+          as RenderRepaintBoundary?;
+      if (boundary == null) return;
+
+      const pixelRatio = 3.0;
+      final image = await boundary.toImage(pixelRatio: pixelRatio);
+      final bytes = await composeShareImage(
+        image: image,
+        badgeColor: scoreLabelToColor(score.label),
+        backgroundColor: bgColor,
+        productName: productName,
+        pixelRatio: pixelRatio,
+      );
+
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/ketobuddy_share.png');
+      await file.writeAsBytes(bytes);
+
+      final text = '$productName — Score keto: ${score.score}/100\n\nby KetoBuddy';
+
+      await Share.shareXFiles(
+        [XFile(file.path, mimeType: 'image/png')],
+        text: text,
+      );
+    } catch (_) {
+    } finally {
+      if (mounted) setState(() => _sharing = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final scoreAsync = ref.watch(ketoScoreProvider(widget.product));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(product.name ?? l.product),
+        title: Text(widget.product.name ?? l.product),
         centerTitle: true,
         actions: [
           IconButton(
@@ -29,12 +84,26 @@ class ProductDetailPage extends ConsumerWidget {
             onPressed: () => showOnboardingDialog(context),
             tooltip: 'Info',
           ),
+          IconButton(
+            icon: _sharing
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.share_outlined),
+            onPressed: _sharing ? null : _shareImage,
+            tooltip: 'Condividi',
+          ),
         ],
       ),
       body: scoreAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text(l.errorGeneric(e.toString()))),
-        data: (score) => _ProductDetailBody(product: product, score: score),
+        data: (score) => RepaintBoundary(
+          key: _captureKey,
+          child: _ProductDetailBody(product: widget.product, score: score),
+        ),
       ),
     );
   }
