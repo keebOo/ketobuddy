@@ -17,7 +17,7 @@ I dati nutrizionali provengono dall'API pubblica e gratuita di **Open Food Facts
 ## Stato attuale del progetto
 
 - **Milestone 01 quasi completa** — core app completo, mancano requisiti store per la pubblicazione.
-- Core funzionante: scan → score → scheda prodotto, storico locale (Hive), onboarding dialog al primo avvio, gestione errori, i18n IT+EN, font DM Sans.
+- Core funzionante: scan → score → scheda prodotto, storico locale (Hive), onboarding dialog al primo avvio, condivisione PNG scheda prodotto, gestione errori, i18n IT+EN, font DM Sans.
 - App icon generata per Android/iOS/macOS. Splash screen nativa implementata. Mancano: icone store via `flutter_launcher_icons`, Privacy Policy, screenshot store, testo store.
 - Testato su Android (Pixel 7). iOS non ancora verificato.
 - Vedi `MILESTONE_01.md` checklist per lo stato dettagliato.
@@ -80,7 +80,7 @@ ketobuddy/
 │   │   │   └── widgets/      # onboarding_dialog.dart
 │   │   ├── history/          # Storico scansioni locale (lista + provider)
 │   │   ├── scan/             # Barcode scanner UI + logic
-│   │   ├── product_detail/   # Scheda prodotto con score
+│   │   ├── product_detail/   # Scheda prodotto con score + condivisione PNG
 │   │   └── settings/         # [FUTURO M02] Limiti giornalieri, preferenze (cartella predisposta)
 │   └── main.dart
 ├── assets/

@@ -44,6 +44,8 @@ dependencies:
   freezed_annotation: ^3.1.0     # Modelli immutabili
   json_annotation: ^4.11.0       # JSON serialization
   hive_flutter: ^1.1.0           # Storage locale (storico + preferenze)
+  share_plus: ^10.1.4            # Condivisione PNG scheda prodotto
+  path_provider: ^2.1.0          # Directory temporanea per file da condividere
   flutter_localizations: sdk: flutter
   intl: ^0.20.2
 
@@ -92,7 +94,8 @@ lib/
 │   │   ├── scan_page.dart
 │   │   └── scan_provider.dart          # Cerca in cache locale, poi API; salva in storico
 │   ├── product_detail/
-│   │   ├── product_detail_page.dart    # AppBar con pulsante "i" per onboarding
+│   │   ├── product_detail_page.dart    # AppBar: pulsanti "i" (onboarding) e share; cattura PNG
+│   │   ├── share_utils.dart            # composeShareImage: canvas con header, badge coccarda colorato per score
 │   │   ├── widgets/
 │   │   │   ├── score_gauge_widget.dart
 │   │   │   ├── macro_bar_widget.dart
@@ -293,12 +296,13 @@ enum ScoreLabel { excellent, good, fair, bad, noData }
 
 ### 🟡 Importanti (non bloccanti, ma consigliati prima del lancio)
 
-| Item | Note |
-|---|---|
-| **Onboarding al primo avvio** | Una schermata che spiega in 3 righe cos'è lo score keto e come interpretarlo. Necessaria per utenti non keto. Si mostra solo al primo lancio, poi non più. |
-| **Feedback visivo durante scan** | Loading indicator visibile mentre l'API risponde. Già presente (`CircularProgressIndicator`) ma da verificare che sia ben visibile su tutti i device. |
-| **Storico ultime scansioni** | Ultimi 10 prodotti scansionati in memoria locale (Hive, già dipendenza). Nessun account. Reset all'upgrade o su richiesta utente. |
-| **Prompt valutazione app** | Dopo la 3ª scansione riuscita, mostrare il prompt nativo di review (`in_app_review`). Le prime recensioni sono fondamentali per la visibilità store. |
+| Item | Stato | Note |
+|---|---|---|
+| **Onboarding al primo avvio** | ✅ | Dialog scrollabile con spiegazione score keto. Si mostra solo al primo lancio; accessibile via pulsante "i" su home e scheda prodotto. |
+| **Feedback visivo durante scan** | ✅ | Overlay scuro animato + spinner bianco durante chiamata API. |
+| **Storico scansioni locale** | ✅ | Hive, max configurabile via `history.max_items` (default 25). Lista raggruppata per data, tap per riaprire il dettaglio. |
+| **Condivisione scheda prodotto** | ✅ | PNG della scheda con header (nome prodotto), badge coccarda colorato per score e testo di accompagnamento. `share_plus` + `path_provider`. |
+| **Prompt valutazione app** | ⬜ | Dopo la 3ª scansione riuscita, mostrare prompt nativo (`in_app_review`, da aggiungere a pubspec). Le prime recensioni sono fondamentali per la visibilità store. |
 
 ---
 
@@ -366,4 +370,5 @@ flutter test --coverage
 ### Nice-to-have prima del lancio
 - [x] Onboarding al primo avvio (dialog scrollabile che spiega lo score keto; si mostra solo una volta, poi accessibile via pulsante "i" su home e scheda prodotto)
 - [x] Storico scansioni in locale (Hive, max configurabile via `history.max_items` in config, default 25)
+- [x] Condivisione scheda prodotto come PNG (`share_plus`): header con nome prodotto, badge coccarda con colore score, testo di accompagnamento
 - [ ] Prompt valutazione app dopo la 3ª scansione riuscita (`in_app_review`, da aggiungere a pubspec)
