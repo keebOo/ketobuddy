@@ -167,14 +167,20 @@ abstract class AppLocalizations {
   /// No description provided for @noInternetConnection.
   ///
   /// In it, this message translates to:
-  /// **'Nessuna connessione internet'**
+  /// **'Sembra che la connessione non ci sia. Controlla il wifi o i dati e riprova.'**
   String get noInternetConnection;
 
   /// No description provided for @apiTimeout.
   ///
   /// In it, this message translates to:
-  /// **'Timeout della richiesta'**
+  /// **'Sembra che la connessione non ci sia. Controlla il wifi o i dati e riprova.'**
   String get apiTimeout;
+
+  /// No description provided for @serverError.
+  ///
+  /// In it, this message translates to:
+  /// **'Il server ha il singhiozzo. Non è colpa tua — riprova tra un attimo.'**
+  String get serverError;
 
   /// No description provided for @product.
   ///

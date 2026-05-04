@@ -8,7 +8,7 @@ class OpenFoodFactsException implements Exception {
   const OpenFoodFactsException(this.message, this.type);
 }
 
-enum OpenFoodFactsErrorType { notFound, noInternet, timeout, unknown }
+enum OpenFoodFactsErrorType { notFound, noInternet, timeout, serverError, unknown }
 
 class OpenFoodFactsService {
   final Dio _dio;
@@ -45,6 +45,11 @@ class OpenFoodFactsService {
           e.response?.statusCode == 404) {
         throw const OpenFoodFactsException(
             'Prodotto non trovato', OpenFoodFactsErrorType.notFound);
+      }
+      if (e.type == DioExceptionType.badResponse &&
+          (e.response?.statusCode ?? 0) >= 500) {
+        throw const OpenFoodFactsException(
+            'Server error', OpenFoodFactsErrorType.serverError);
       }
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout ||

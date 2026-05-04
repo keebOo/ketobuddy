@@ -43,10 +43,16 @@ class AppLocalizationsIt extends AppLocalizations {
       'Prodotto non trovato.\nPuoi aggiungerlo su openfoodfacts.org';
 
   @override
-  String get noInternetConnection => 'Nessuna connessione internet';
+  String get noInternetConnection =>
+      'Sembra che la connessione non ci sia. Controlla il wifi o i dati e riprova.';
 
   @override
-  String get apiTimeout => 'Timeout della richiesta';
+  String get apiTimeout =>
+      'Sembra che la connessione non ci sia. Controlla il wifi o i dati e riprova.';
+
+  @override
+  String get serverError =>
+      'Il server ha il singhiozzo. Non è colpa tua — riprova tra un attimo.';
 
   @override
   String get product => 'Prodotto';

@@ -236,7 +236,8 @@ class _ScanPageState extends ConsumerState<ScanPage>
   void _showError(BuildContext context, ScanError error) {
     final l = AppLocalizations.of(context)!;
     final isRetryable = error.errorType == OpenFoodFactsErrorType.timeout ||
-        error.errorType == OpenFoodFactsErrorType.noInternet;
+        error.errorType == OpenFoodFactsErrorType.noInternet ||
+        error.errorType == OpenFoodFactsErrorType.serverError;
 
     showDialog<void>(
       context: context,
@@ -278,6 +279,8 @@ class _ScanPageState extends ConsumerState<ScanPage>
         return l.noInternetConnection;
       case OpenFoodFactsErrorType.timeout:
         return l.apiTimeout;
+      case OpenFoodFactsErrorType.serverError:
+        return l.serverError;
       case OpenFoodFactsErrorType.unknown:
         return error.message;
     }
