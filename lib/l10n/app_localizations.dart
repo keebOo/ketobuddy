@@ -182,6 +182,12 @@ abstract class AppLocalizations {
   /// **'Il server ha il singhiozzo. Non è colpa tua — riprova tra un attimo.'**
   String get serverError;
 
+  /// No description provided for @slowConnectionMessage.
+  ///
+  /// In it, this message translates to:
+  /// **'Connessione lenta, sto riprovando...'**
+  String get slowConnectionMessage;
+
   /// No description provided for @product.
   ///
   /// In it, this message translates to:

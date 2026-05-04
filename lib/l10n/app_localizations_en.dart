@@ -55,6 +55,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'The server hiccuped. Not your fault — give it another go in a sec.';
 
   @override
+  String get slowConnectionMessage => 'Slow connection, retrying...';
+
+  @override
   String get product => 'Product';
 
   @override

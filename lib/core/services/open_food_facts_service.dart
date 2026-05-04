@@ -21,7 +21,31 @@ class OpenFoodFactsService {
               receiveTimeout: const Duration(seconds: 10),
             ));
 
+  static const _maxRetries = 1;
+  static const _retryDelay = Duration(milliseconds: 1500);
+
   Future<Product> fetchProduct(String barcode) async {
+    int attempt = 0;
+    while (true) {
+      try {
+        return await _doFetch(barcode);
+      } on OpenFoodFactsException catch (e) {
+        if (_isRetryable(e.type) && attempt < _maxRetries) {
+          attempt++;
+          await Future.delayed(_retryDelay);
+        } else {
+          rethrow;
+        }
+      }
+    }
+  }
+
+  bool _isRetryable(OpenFoodFactsErrorType type) =>
+      type == OpenFoodFactsErrorType.timeout ||
+      type == OpenFoodFactsErrorType.noInternet ||
+      type == OpenFoodFactsErrorType.serverError;
+
+  Future<Product> _doFetch(String barcode) async {
     try {
       final response = await _dio.get(
         '/product/$barcode',

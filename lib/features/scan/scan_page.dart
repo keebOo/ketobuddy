@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -24,6 +25,9 @@ class _ScanPageState extends ConsumerState<ScanPage>
   bool _cameraStopped = false;
   String? _lastBarcode;
 
+  Timer? _slowTimer;
+  bool _slowConnection = false;
+
   late final AnimationController _overlayController;
   late final Animation<double> _overlayOpacity;
 
@@ -41,10 +45,27 @@ class _ScanPageState extends ConsumerState<ScanPage>
 
   @override
   void dispose() {
+    _slowTimer?.cancel();
     _overlayController.dispose();
     _controller.dispose();
     _manualController.dispose();
     super.dispose();
+  }
+
+  // --- slow connection timer ---
+
+  void _startSlowTimer() {
+    _slowTimer?.cancel();
+    _slowConnection = false;
+    _slowTimer = Timer(const Duration(seconds: 5), () {
+      if (mounted) setState(() => _slowConnection = true);
+    });
+  }
+
+  void _cancelSlowTimer() {
+    _slowTimer?.cancel();
+    _slowTimer = null;
+    if (mounted && _slowConnection) setState(() => _slowConnection = false);
   }
 
   // --- overlay helpers ---
@@ -97,17 +118,22 @@ class _ScanPageState extends ConsumerState<ScanPage>
     final isWide = MediaQuery.of(context).size.width > 700;
 
     ref.listen<ScanState>(scanProvider, (prev, next) {
-      if (next is ScanSuccess) {
-        // Fermiamo la camera solo adesso (navigazione imminente)
-        _controller.stop();
-        _cameraStopped = true;
-        Navigator.of(context)
-            .push(MaterialPageRoute(
-              builder: (_) => ProductDetailPage(product: next.product),
-            ))
-            .then((_) => _restartScanner());
-      } else if (next is ScanError) {
-        _showError(context, next);
+      if (next is ScanLoading) {
+        _startSlowTimer();
+      } else {
+        _cancelSlowTimer();
+        if (next is ScanSuccess) {
+          // Fermiamo la camera solo adesso (navigazione imminente)
+          _controller.stop();
+          _cameraStopped = true;
+          Navigator.of(context)
+              .push(MaterialPageRoute(
+                builder: (_) => ProductDetailPage(product: next.product),
+              ))
+              .then((_) => _restartScanner());
+        } else if (next is ScanError) {
+          _showError(context, next);
+        }
       }
     });
 
@@ -135,16 +161,29 @@ class _ScanPageState extends ConsumerState<ScanPage>
           ),
           // Spinner visibile sopra l'overlay durante la chiamata API
           if (state is ScanLoading)
-            const Positioned.fill(
+            Positioned.fill(
               child: IgnorePointer(
                 child: Center(
-                  child: SizedBox(
-                    width: 44,
-                    height: 44,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 3,
-                      color: Colors.white,
-                    ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        width: 44,
+                        height: 44,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          color: Colors.white,
+                        ),
+                      ),
+                      if (_slowConnection) ...[
+                        const SizedBox(height: 14),
+                        Text(
+                          AppLocalizations.of(context)!.slowConnectionMessage,
+                          style: const TextStyle(
+                              color: Colors.white70, fontSize: 13),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
               ),
@@ -190,12 +229,7 @@ class _ScanPageState extends ConsumerState<ScanPage>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (state is ScanLoading)
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: CircularProgressIndicator(),
-            )
-          else ...[
+          if (state is! ScanLoading) ...[
             Text(
               l.scanInstructions,
               style: TextStyle(color: Colors.grey.shade600, fontSize: 13),

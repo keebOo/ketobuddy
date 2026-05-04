@@ -14,6 +14,7 @@
   "noInternetConnection": "Looks like you're offline. Check your connection and try again.",
   "apiTimeout": "Looks like you're offline. Check your connection and try again.",
   "serverError": "The server hiccuped. Not your fault — give it another go in a sec.",
+  "slowConnectionMessage": "Slow connection, retrying...",
   "product": "Product",
   "scoreExcellent": "Excellent for keto",
   "scoreGood": "Good",

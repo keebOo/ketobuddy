@@ -14,6 +14,7 @@
   "noInternetConnection": "Sembra che la connessione non ci sia. Controlla il wifi o i dati e riprova.",
   "apiTimeout": "Sembra che la connessione non ci sia. Controlla il wifi o i dati e riprova.",
   "serverError": "Il server ha il singhiozzo. Non è colpa tua — riprova tra un attimo.",
+  "slowConnectionMessage": "Connessione lenta, sto riprovando...",
   "product": "Prodotto",
   "scoreExcellent": "Eccellente per keto",
   "scoreGood": "Buono",

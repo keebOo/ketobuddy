@@ -55,6 +55,9 @@ class AppLocalizationsIt extends AppLocalizations {
       'Il server ha il singhiozzo. Non è colpa tua — riprova tra un attimo.';
 
   @override
+  String get slowConnectionMessage => 'Connessione lenta, sto riprovando...';
+
+  @override
   String get product => 'Prodotto';
 
   @override
